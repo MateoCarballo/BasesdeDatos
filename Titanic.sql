@@ -9,17 +9,17 @@ use 							Titanic;
 #-------------------------------------------------------------------------------------------------------------------
 CREATE TABLE `mytable` (
   `PassengerId` BIGINT,
-  `Survived` BIGINT,
-  `Pclass` BIGINT,
-  `Name` VARCHAR(1024),
-  `Sex` VARCHAR(1024),
-  `Age` VARCHAR(1024),
-  `SibSp` BIGINT,
-  `Parch` BIGINT,
-  `Ticket` VARCHAR(1024),
-  `Fare` VARCHAR(1024),
-  `Cabin` VARCHAR(1024),
-  `Embarked` VARCHAR(1024)
+  `Survived` 	BIGINT,
+  `Pclass` 		BIGINT,
+  `Name` 		VARCHAR(1024),
+  `Sex` 		VARCHAR(1024),
+  `Age` 		VARCHAR(1024),
+  `SibSp` 		BIGINT,
+  `Parch` 		BIGINT,
+  `Ticket` 		VARCHAR(1024),
+  `Fare` 		VARCHAR(1024),
+  `Cabin`	 	VARCHAR(1024),
+  `Embarked` 	VARCHAR(1024)
 );
 #-------------------------------------------------------------------------------------------------------------------
 #	INSERCIÓN DE LOS REGISTROS -> copia el INSERT en su totalidad.
@@ -927,88 +927,88 @@ INSERT INTO `mytable` VALUES
 #	MODIFICACIÓN DE LOS ELEMENTOS DE LA TABLA
 #-------------------------------------------------------------------------------------------------------------------
 #	`PassengerId` BIGINT	->	idPasajero	INT
-Alter table Titanic_Datos change column PassengerId idPasajero INT;
-
 #  	`Survived` BIGINT,		->	Sobrevivió	INT
-Alter table Titanic_Datos change column Survived Sobrevivió INT;
-
 #  	`Pclass` BIGINT,		->	Clase		CHAR
-Alter table Titanic_Datos change column Pclass Clase Char;
-
 #  	`Name` VARCHAR(1024),	->	Nombre		VARCHAR( 100 )
-Alter table Titanic_Datos change column name Nombre VARCHAR (100);
-
 #  	`Sex` VARCHAR(1024),	->	Sexo		VARCHAR( 10 )
-Alter table Titanic_Datos change column Sex Sexo VARCHAR(10);
-
 #	`Age` VARCHAR(1024),	->	Edad		VARCHAR( 4 )
-Alter table Titanic_Datos change column Age Edad Varchar(4);
-
 #  	`SibSp` BIGINT,			->	Familiares	INT
-Alter table Titanic_Datos change column SibSP Familiares INT;
-
 #  	`Parch` BIGINT,			->	PadresHijos	INT
-Alter table Titanic_Datos change column Parch PadresHijos INT;
-
 # 	`Ticket` VARCHAR(1024),	->	idTicket	VARCHAR( 50 )
-Alter table Titanic_Datos change column Ticket idTicket VARCHAR (50);
-
 # 	`Fare` VARCHAR(1024),	->	Tarifa		VARCHAR( 8 )
-Alter table Titanic_Datos change column Fare Tarifa VARCHAR(8);
-
 # 	`Cabin` VARCHAR(1024),	->	idCabina	VARCHAR( 20 )
-Alter table Titanic_Datos change column Cabin idCabina VARCHAR (20);
-
 #  	`Embarked` VARCHAR(1024)->	Embarque	VARCHAR( 20 )
-Alter table Titanic_Datos change column Embarked embarque VARCHAR(20);
+
+Alter table 	Titanic_Datos 
+change column 	PassengerId 	idPasajero 	INT,
+change column 	name 			Nombre 		VARCHAR (100),
+change column 	Survived 		Sobrevivió 	INT,
+change column 	Pclass 			Clase 		Char,
+change column 	Sex 			Sexo 		VARCHAR(10),
+change column 	Age 			Edad 		Varchar(4),
+change column 	SibSP 			Familiares 	INT,
+change column 	Parch 			PadresHijos INT,
+change column 	Ticket 			idTicket 	VARCHAR (50),
+change column 	Fare 			Tarifa 		VARCHAR(8),
+change column 	Cabin 			idCabina 	VARCHAR (20),
+change column 	Embarked 		embarque 	VARCHAR(20);
 
 #-------------------------------------------------------------------------------------------------------------------
-        
 #-------------------------------------------------------------------------------------------------------------------
 #	CREACIÓN DE LAS TABLAS 'Pasajeros' y 'Adquiere' en función de los datos de la tabla inicial (CREATE + SELECT)
 #	-Pasajeros(idPasajero, Clase, idCabina, Nombre, Edad, Sexo, PadresHijos, Familiares, Sobrevivió, idTicket)
 #	-Adquiere(idTicket, Tarifa, Embarque)
 #-------------------------------------------------------------------------------------------------------------------
 CREATE TABLE pasajeros 
-select idPasajero, Clase, idCabina, Nombre, Edad, Sexo, PadresHijos, Familiares, Sobrevivió, idTicket from Titanic_Datos;
+select idPasajero, Clase, idCabina, Nombre, Edad, Sexo, PadresHijos, Familiares, Sobrevivió, idTicket, Embarque from Titanic_Datos;
 
 CREATE TABLE adquiere 
-select idTicket, tarifa, embarque from Titanic_Datos;
+select distinct idTicket, tarifa FROM Titanic_Datos;
 
 #-------------------------------------------------------------------------------------------------------------------
 #	ELIMINACIÓN DE LA TABLA 'Titanic_datos'
 #-------------------------------------------------------------------------------------------------------------------
-	drop table Titanic_datos;
+drop table Titanic_datos;
 #-------------------------------------------------------------------------------------------------------------------
 #	MODIFICACIÓN EN LAS TABLAS: (Empieza Modificando Pasajeros)
 #		- Todos los datos no admiten valores nulos
-alter table pasajeros modify idPasajero int not null;
-alter table pasajeros modify Clase char not null;
-alter table pasajeros modify idCabina varchar(20) not null;
-alter table pasajeros modify Nombre varchar(100) not null;
-alter table pasajeros modify Edad varchar(4) not null;
-alter table pasajeros modify Sexo varchar(10) not null;
-alter table pasajeros modify PadresHijos int not null;
-alter table pasajeros modify Familiares int not null;
-alter table pasajeros modify Sobrevivió int not null;
-alter table pasajeros modify idTicket varchar(50) not null;
+alter table pasajeros 
+modify idPasajero 	int 			not null,
+modify Clase 		char 			not null,
+modify idCabina 	varchar(20) 	not null,
+modify Nombre 		varchar(100) 	not null,
+modify Edad 		varchar(4) 		not null,
+modify Sexo 		varchar(10) 	not null,
+modify PadresHijos 	int 			not null,
+modify Familiares 	int 			not null,
+modify Sobrevivió 	int 			not null,
+modify idTicket 	varchar(50) 	not null,
+modify embarque 	varchar(20) 	not null;
 
-alter table adquiere modify idTicket varchar(50) not null;
-alter table adquiere modify tarifa varchar(8) not null;
-alter table adquiere modify embarque varchar(20) not null;
+alter table adquiere 	
+modify idTicket 	varchar(50) 	not null,
+modify tarifa 		varchar(8) 		not null;
+
+
 
 	
 #		- Creación de las claves primarias de ambas tablas
-alter table adquiere add primary key (idTicket) ;
-alter table pasajeros add primary key (idPasajero);
+## alter table adquiere 	add primary key (idTicket);
+alter table pasajeros 	add primary key (idPasajero);
 
 #		- Creación de la clave foránea entre dichas tablas
-alter table pasajeros add foreign key (idTicket) references idTicket;
-alter table adquiere add foreign key (idTicket) references idTicket;
+##alter table pasajeros add foreign key (idTicket) references adquiere(idTicket);
+
+
+ALTER TABLE pasajeros ADD FOREIGN KEY (idTicket) REFERENCES adquiere(idTicket);
+
+
+###########################alter table adquiere add foreign key (idTicket) references idTicket;
 
 #-------------------------------------------------------------------------------------------------------------------
 select * from adquiere;
 select * from pasajeros;
+
 #-------------------------------------------------------------------------------------------------------------------
 #	MODIFICACIÓN DEL TIPO DE DATOS VARCHAR() A TEXT
 #-------------------------------------------------------------------------------------------------------------------
