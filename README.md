@@ -3,9 +3,12 @@
 
    [Volver](https://github.com/MateoCarballo/Principal)
 
-  Repositorio con ejercicios hechos en clase. 
+Repositorio con ejercicios hechos en clase. 
+| Ejercicio | Enlaces                      |
+|--------:|-----------------------------------------------------|
+| TITANIC  | [Enlace repo]()|
   
-  Dividos por trimestres. Incluye ejercicios teóricos como ejemplos prácticos con MySQL
+
   
   
   
