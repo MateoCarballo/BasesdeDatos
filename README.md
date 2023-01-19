@@ -1,7 +1,7 @@
 # BasesdeDatos
 
 
-   [Volver](https://github.com/MateoCarballo/Principal)
+   [Enlace repo principal](https://github.com/MateoCarballo/Principal)
 
 Repositorio con ejercicios hechos en clase. 
 | Ejercicio | Enlaces                      |
