@@ -12,3 +12,6 @@ Repositorio con ejercicios hechos en clase.
 |[Consultas con conjuntos](https://github.com/MateoCarballo/ConsultasConjuntos)|
 |[EmpleadosEmpresa](https://github.com/MateoCarballo/EmpleadosEmpresa)|  
   
+<!--TODO 
+hacer ejerciccios de Ejercicios de Consultas sobre las BD de la UD 4
+>
