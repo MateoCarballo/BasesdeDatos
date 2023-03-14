@@ -15,6 +15,8 @@ Repositorio con ejercicios hechos en clase.
 |--------------------------------------|
 |[Ejercicios desde 1 a 8 tablas](https://github.com/MateoCarballo/Ejercicios-Bases-de-Datos-Tema-4/tree/main/Ejercicios%20BD)|
 |[Cosas varias hechas en clase](https://github.com/MateoCarballo/Cosas-Varias-BD)|
+|[Vistas de una base de datos](https://github.com/MateoCarballo/Vistas-Bases-de-Datos)|
+
 
 
 
