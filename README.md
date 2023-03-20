@@ -14,16 +14,9 @@ Repositorio con ejercicios hechos en clase.
 | Ejercicios Bases de Datos Tema 4 | [Enlace](./Ej-Tema-4/)                 |
 | Titanic                      | [Enlace](./Titanic/)                   |
 | EmpleadosEmpresa             | [Enlace](./EmpleadosEmpresa/)          |
-
 | Personas-Coches              | [Enlace](./Personas-Coches/)           |
 | PlantillaMySQL               | [Enlace](./PlantillaMySQL/)            |
 | Vistas Bases de Datos        | [Enlace](./Vistas/)                    |
-
-
-
-## ConsultasConjuntos
-
-Descripción de los ejercicios de ConsultasConjuntos.
 
 <!--TODO 
 Dividir el repo por trimestres
