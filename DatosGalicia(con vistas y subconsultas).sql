@@ -10,19 +10,31 @@
 #  1. Une las tablas y las relaciones inexistentes muéstralas mediante valor NULL.
 #------------------------------------------------------------------------------------------------
 
-select distinct * from provinciasgalicia 	as t1 
-left outer join comarcasgalicia 	as t2 on t1.provincia=t2.provincia
-left outer join concellosgalicia 	as t3 on t3.comarca=t2.comarca
-left outer join poblaciongalicia 	as t4 on t4.concello=t3.concello
+selecT * from provinciasgalicia 	as t1 
+left outer join comarcasgalicia 			as t2 on t1.provincia=t2.provincia
+left outer join concellosgalicia 			as t3 on t3.comarca=t2.comarca
+left outer join poblaciongalicia 			as t4 on t4.concello=t3.concello
  ;
+ 
+ (selecT * from provinciasgalicia left outer join comarcasgalicia on provinciasgalicia.provincia=comarcasgalicia.provincia
+left outer join concellosgalicia on concellosgalicia.comarca=comarcasgalicia.comarca
+left outer join poblaciongalicia on poblaciongalicia.concello=concellosgalicia.concello);
+
 
 #------------------------------------------------------------------------------------------------
 #  2. Muestra los datos del Concello con mayor superficie.
 #------------------------------------------------------------------------------------------------
-
+SELECT * FROM concellosgalicia where  superficie = (select max(superficie) from concellosgalicia);
 #------------------------------------------------------------------------------------------------
 #  3. Muestra para cada Concello su nombre, la Comarca a la que pertenece y la provincia a la que pertenece.
 #------------------------------------------------------------------------------------------------
+select distinct t3.nombre as 'Nombre Concello',t2.nombre as 'Nombre comarca',t1.nombre as 'Nombre provincia'
+from (provinciasgalicia as t1 left outer join comarcasgalicia as t2 on t1.provincia=t2.provincia
+left outer join concellosgalicia as t3 on t3.comarca=t2.comarca
+left outer join poblaciongalicia as t4 on t4.concello=t3.concello);
+
+## T1= Provincia   T3=Concello
+## T2= Comarca     T4=Poblacion
 
 #------------------------------------------------------------------------------------------------
 #  4. Muestra el nombre del Concello (o Concellos) con menor diferencia entre mujeres y hombres.
