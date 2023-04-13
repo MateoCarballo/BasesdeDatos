@@ -21,5 +21,5 @@ Repositorio con ejercicios hechos en clase durante la segunda evaluación. En es
 | Vistas Bases de Datos        | [Enlace](./Vistas-Bases-de-Datos/)    |
 | Ejercicio Futbol             | [Enlace](./Ejercicio%20Furbol/)|
 <!--TODO 
-Dividir el repo por trimestres
+Reorganizar direcciones tabla
 >
