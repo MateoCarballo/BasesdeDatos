@@ -8,6 +8,7 @@ Repositorio con ejercicios hechos en clase durante la segunda evaluación. En es
 
 | Ejercicio                    |                                      |
 |------------------------------|--------------------------------------|
+|Segundo Trimestre|--------------------------------------|
 | ConsultasConjuntos           | [Enlace](./Segundo%20Trimestre/ConsultasConjuntos/)       |
 | ConsultasRegExp              | [Enlace](./Segundo%20Trimestre/Consultas-regexp--like/)   |
 | Cosas Varias BD              | [Enlace](./Segundo%20Trimestre/Cosas-Varias-20BD/)        |
@@ -20,6 +21,8 @@ Repositorio con ejercicios hechos en clase durante la segunda evaluación. En es
 | PlantillaMySQL               | [Enlace](./Segundo%20Trimestre/PlantillaMySQL/)           |
 | Vistas Bases de Datos        | [Enlace](./Segundo%20Trimestre/Vistas-Bases-de-Datos/)    |
 | Ejercicio Futbol             | [Enlace](./Segundo%20Trimestre/Ejercicio%20Furbol/)|
+|Tercer Trimestre|--------------------------------------|
+|--------------------------------------|--------------------------------------|
 <!--TODO 
 Reorganizar direcciones tabla
 >
