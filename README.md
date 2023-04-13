@@ -8,18 +8,18 @@ Repositorio con ejercicios hechos en clase durante la segunda evaluación. En es
 
 | Ejercicio                    |                                      |
 |------------------------------|--------------------------------------|
-| ConsultasConjuntos           | [Enlace](./ConsultasConjuntos/)       |
-| ConsultasRegExp              | [Enlace](./Consultas-regexp--like/)   |
-| Cosas Varias BD              | [Enlace](./Cosas-Varias-20BD/)        |
-| Ejercicio localidades        | [Enlace](./Ejercicio-localidades-provincias-comunidades/) |
-| Ejercicios sobre vistas      | [Enlace](./Ejercicios%20sobre%20vistas/) |
+| ConsultasConjuntos           | [Enlace](./Segundo%20Trimestre/ConsultasConjuntos/)       |
+| ConsultasRegExp              | [Enlace](./Segundo%20Trimestre/Consultas-regexp--like/)   |
+| Cosas Varias BD              | [Enlace](./Segundo%20Trimestre/Cosas-Varias-20BD/)        |
+| Ejercicio localidades        | [Enlace](./Segundo%20Trimestre/Ejercicio-localidades-provincias-comunidades/) |
+| Ejercicios sobre vistas      | [Enlace](./Segundo%20Trimestre/Ejercicios%20sobre%20vistas/) |
 | Ejercicios Bases de Datos Tema 4 | [Enlace](./Ej-Tema-4/)                |
-| Titanic                      | [Enlace](./Titanic/)                  |
-| EmpleadosEmpresa             | [Enlace](./EmpleadosEmpresa/)         |
-| Personas-Coches              | [Enlace](./Personas-Coches/)          |
-| PlantillaMySQL               | [Enlace](./PlantillaMySQL/)           |
-| Vistas Bases de Datos        | [Enlace](./Vistas-Bases-de-Datos/)    |
-| Ejercicio Futbol             | [Enlace](./Ejercicio%20Furbol/)|
+| Titanic                      | [Enlace](./Segundo%20Trimestre/Titanic/)                  |
+| EmpleadosEmpresa             | [Enlace](./Segundo%20Trimestre/EmpleadosEmpresa/)         |
+| Personas-Coches              | [Enlace](./Segundo%20Trimestre/Personas-Coches/)          |
+| PlantillaMySQL               | [Enlace](./Segundo%20Trimestre/PlantillaMySQL/)           |
+| Vistas Bases de Datos        | [Enlace](./Segundo%20Trimestre/Vistas-Bases-de-Datos/)    |
+| Ejercicio Futbol             | [Enlace](./Segundo%20Trimestre/Ejercicio%20Furbol/)|
 <!--TODO 
 Reorganizar direcciones tabla
 >
