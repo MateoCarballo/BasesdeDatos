@@ -22,7 +22,7 @@ Repositorio con ejercicios hechos en clase durante la segunda evaluación. En es
 | Vistas Bases de Datos        | [Enlace](./Segundo%20Trimestre/Vistas-Bases-de-Datos/)    |
 | Ejercicio Futbol             | [Enlace](./Segundo%20Trimestre/Ejercicio%20Furbol/)|
 |Tercer Trimestre|--------------------------------------|
-|Update,Delete,Insert con concellos Galicia|[Enlace](./Tercer%20Trimestre/Concellos%20-%20Ejercicio.sql)]|
+|Update,Delete,Insert con concellos Galicia|[Enlace](./Tercer%20Trimestre/Concellos%20-%20Ejercicio.sql)|
 <!--TODO 
 Reorganizar direcciones tabla
 >
