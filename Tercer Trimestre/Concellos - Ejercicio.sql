@@ -368,8 +368,8 @@ INSERT INTO datos (`Concello`,`Nombre`,`Superficie`,`Mujeres`,`Hombres`,`Comarca
 INSERT INTO datos (`Concello`,`Nombre`,`Superficie`,`Mujeres`,`Hombres`,`Comarca`,`Provincia`) VALUES (1311,'Soutomaior',24.99,3749,3733,'Vigo','Pontevedra');
 INSERT INTO datos (`Concello`,`Nombre`,`Superficie`,`Mujeres`,`Hombres`,`Comarca`,`Provincia`) VALUES (1312,'Vigo',109.06,155203,138634,'Vigo','Pontevedra');
 
+SELECT * FROM datos order by mujeres desc;
 
-SELECT * FROM datos order by Mujeres;
 #------------------------------------------------------------------------------------------------
 #  2. Borra todos los datos
 #------------------------------------------------------------------------------------------------
@@ -383,46 +383,51 @@ SELECT * FROM datos order by Mujeres;
 #------------------------------------------------------------------------------------------------
 #  4. Borra todos los Concellos cuya Comarca NO empiece por vocal
 #------------------------------------------------------------------------------------------------
-    
+-- DELETE FROM datos where Comarca regexp '^[^aeiouáéíóúü]';
 #------------------------------------------------------------------------------------------------
 #  5. Borra el Concello con mayor población
 #------------------------------------------------------------------------------------------------
-
-
-
+-- SELECT * FROM datos order by Mujeres desc limit 1;
 #------------------------------------------------------------------------------------------------
 #  6. Borra los tres Concellos con mayor densidad de población
 #------------------------------------------------------------------------------------------------
-    
+Select Nombre,((hombres + mujeres)/superficie) as 'Densidad(km/m2)',concello,superficie from datos order by ((hombres + mujeres)/superficie) desc limit 3; 
 #------------------------------------------------------------------------------------------------
 #  7. Borra los Concellos que empiecen por 'B'
 #------------------------------------------------------------------------------------------------
-    
+SELECT * FROM datos where Nombre regexp'^[B]';
 #------------------------------------------------------------------------------------------------
 #  8. Borra los diez primeros Concellos que acaben por 's'
 #------------------------------------------------------------------------------------------------
-	
+SELECT * FROM datos where Nombre regexp'[s]$';
 #------------------------------------------------------------------------------------------------
 #  9. Borra los cinco últimos Concellos ordenados en función de su superficie
 #------------------------------------------------------------------------------------------------       
-	
+Select * from datos order by superficie desc limit 5;	
 #------------------------------------------------------------------------------------------------
 # 10. La población de las mujeres de Galicia se multiplica por 10
 #------------------------------------------------------------------------------------------------       
-	
+	Update datos set mujeres=mujeres*10;
+    Select * from datos order by mujeres desc;
 #------------------------------------------------------------------------------------------------
-# 11. La población de los hombres aumenta en un 37 %en Pontevedra.
+# 11. La población de los hombres aumenta en un 37 % en Pontevedra.
 #------------------------------------------------------------------------------------------------       
-	
+	Update datos set hombres=hombres*1.37 where nombre ='Pontevedra';
 #------------------------------------------------------------------------------------------------
 # 12. El Alcalde Caballero decide cambiar el nombre de la ciudad de Vigo por Teis
 #------------------------------------------------------------------------------------------------       
-	
+	Update datos set nombre='Teis' where nombre ='Vigo';
+    Update datos set comarca='Teis' where comarca ='Vigo';
 #------------------------------------------------------------------------------------------------
 # 13. Los siete Concellos de Lugo con mayor número de hombres, decrementa cada uno su población de mujeres en el número de hombres
 #------------------------------------------------------------------------------------------------       
-	
+	Select * from datos where comarca='Lugo' order by hombres desc limit 7;
+    Update datos set mujeres = mujeres-hombres where comarca='Lugo' order by hombres desc limit 7;
+
 #------------------------------------------------------------------------------------------------
 # 14. La población de los siete Concellos más importantes de Galicia está duplicada y se ha de corregir
-#------------------------------------------------------------------------------------------------       
+#------------------------------------------------------------------------------------------------
+Update datos set mujeres = mujeres/2, hombres=hombres/2;
+Select * from datos order by mujeres +hombres desc limit 7;
+       
 	
