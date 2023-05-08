@@ -15,75 +15,6 @@
     
 */----------------------------------------------------------------------------------------------------------
 
--- TENGO LA BASE DE DATOS Y LOS REGISTROS INTRODUCIDOS EN EL EJERCICIO PROPIO AHORA INTRODUCIRE TRES VALORES UNO EN CADA TABLA
--- DESPUES DE CADA UNO COMITEO PARA SALVAR LOS CAMBIOS REALIZADOS
-
-SELECT User FROM mysql.user WHERE User='usuario';
-
-USE ConcellosGalicia_DebilidadxExistencia;
-DROP USER IF EXISTS usuario1,usuario2,usuario3;
-CREATE USER usuario1 identified by 'abc', usuario2 identified by 'abc', usuario3 identified by 'abc';
-GRANT ALL PRIVILEGES ON ConcellosGalicia_DebilidadxExistencia.* TO usuario1,usuario2,usuario3;
-
-START TRANSACTION;
-
-INSERT INTO ProvinciasGalicia VALUES	( 21, 'Pontevedra' );
-savepoint sv11;
-ROLLBACK;
-INSERT INTO	ComarcasGalicia VALUES 	( 201, 'Nueva Comarca 1', 21 );
-savepoint sv12;
-INSERT INTO	ConcellosGalicia VALUES 	(2001, 'Nuevo Concello 1', 100.200, 201 );
-savepoint sv13;
-INSERT INTO PoblacionGalicia( año, Concello, mujeres, hombres )	VALUES ( 2023, 2001, 10000,20000);
-savepoint sv14;
-ROLLBACK TO SAVEPOINT sv13;
-
-INSERT INTO ProvinciasGalicia VALUES	( 22, 'Nueva Provincia 2' );
-savepoint sv21;
-INSERT INTO	ComarcasGalicia VALUES 	( 202, 'Nueva Comarca 2', 22 );
-savepoint sv22;
-INSERT INTO	ConcellosGalicia VALUES 	(2002, 'Nuevo Concello 2', 100.200, 202 );
-savepoint sv23;
-INSERT INTO PoblacionGalicia( año, Concello, mujeres, hombres )	VALUES ( 2023, 2002, 10000,20000);
-savepoint sv24;
-
-INSERT INTO ProvinciasGalicia VALUES	( 23, 'Nueva Provincia 3' );
-savepoint sv31;
-INSERT INTO	ComarcasGalicia VALUES 	( 203, 'Nueva Comarca 3', 23 );
-savepoint sv32;
-INSERT INTO	ConcellosGalicia VALUES 	(2003, 'Nuevo Concello 3', 100.200, 203 );
-savepoint sv33;
-INSERT INTO PoblacionGalicia( año, Concello, mujeres, hombres )	VALUES ( 2023, 2003, 10000,20000);
-savepoint sv34;
-
-commit;
-
-
-/*
-START TRANSACTION;
-
-INSERT INTO ProvinciasGalicia VALUES	( 21, 'Nueva Provincia 1' );
-INSERT INTO	ComarcasGalicia VALUES 	( 201, 'Nueva Comarca 1', 21 );
-INSERT INTO	ConcellosGalicia VALUES 	(2001, 'Nuevo Concello 1', 100.200, 201 );
-INSERT INTO PoblacionGalicia( año, Concello, mujeres, hombres )	VALUES ( 2023, 2001, 10000,20000);
-commit;
-
-INSERT INTO ProvinciasGalicia VALUES	( 22, 'Nueva Provincia 2' );
-INSERT INTO	ComarcasGalicia VALUES 	( 202, 'Nueva Comarca 2', 22 );
-INSERT INTO	ConcellosGalicia VALUES 	(2002, 'Nuevo Concello 2', 100.200, 202 );
-INSERT INTO PoblacionGalicia( año, Concello, mujeres, hombres )	VALUES ( 2023, 2002, 10000,20000);
-commit;
-
-INSERT INTO ProvinciasGalicia VALUES	( 23, 'Nueva Provincia 3' );
-INSERT INTO	ComarcasGalicia VALUES 	( 203, 'Nueva Comarca 3', 23 );
-INSERT INTO	ConcellosGalicia VALUES 	(2003, 'Nuevo Concello 3', 100.200, 203 );
-INSERT INTO PoblacionGalicia( año, Concello, mujeres, hombres )	VALUES ( 2023, 2003, 10000,20000);
-commit;
-*/
-
-
-
-
 #*******************************************************************************************
 #	CREACIÓN DE LA BASE DE DATOS ConcellosGalicia_Existencia
 #*******************************************************************************************
@@ -142,8 +73,14 @@ INSERT INTO ProvinciasGalicia
     Constraint		Nombre_Comarca_NO_VACÍO			check( nombre 		!= '' )
     #Constraint		Provincia_Comarca_NO_VACÍO		check( Provincia  	!= '' )
 );
+
+START TRANSACTION;
+-- Comenzamos el ejercicio:
+-- Savepoint inicial
+savepoint puntodepartida;
+
  INSERT INTO	ComarcasGalicia
-		VALUES 	( 100, 'Arzúa', 10 ),
+		VALUES 	( 100, null, 10 ),
 				( 101, 'Barbanza', 10 ),
 				( 102, 'A Barcala', 10 ),
                 ( 103, 'Bergantiños', 10 ),
@@ -157,8 +94,37 @@ INSERT INTO ProvinciasGalicia
                 ( 111, 'Ordes', 10 ),
                 ( 112, 'Ortegal', 10 ),
                 ( 113, 'Santiago', 10 ),
-                ( 114, 'O Sar', 10 ),
-                ( 115, 'Terra de Melide', 10 ),
+                ( 114, 'O Sar', 10 );
+-- Provocamos un error intencionado en uno de los insert
+-- Volvemos al punto inicial
+rollback to puntodepartida;
+Select * from comarcasgalicia;
+
+-- Corregimos el error e introducimos los valores OK
+INSERT INTO	ComarcasGalicia
+		VALUES 	( 100,'Arzua', 10 ),
+				( 101, 'Barbanza', 10 ),
+				( 102, 'A Barcala', 10 ),
+                ( 103, 'Bergantiños', 10 ),
+                ( 104, 'Betanzos', 10 ),
+                ( 105, 'A Coruña', 10 ),
+                ( 106, 'Eume', 10 ),
+                ( 107, 'Ferrol', 10 ),
+                ( 108, 'Fisterra', 10 ),
+                ( 109, 'Muros', 10 ),
+                ( 110, 'Noia', 10 ),
+                ( 111, 'Ordes', 10 ),
+                ( 112, 'Ortegal', 10 ),
+                ( 113, 'Santiago', 10 ),
+                ( 114, 'O Sar', 10 );               
+savepoint sv1;
+select * from comarcasgalicia;
+
+
+-- Introducimos valores con error para provocar fallos
+INSERT INTO ComarcasGalicia
+-- ( 115, 'Terra de Melide', 10 ),
+		VALUES  ( 115, null, 10 ),
                 ( 116, 'Terra de Soneira', 10 ),
                 ( 117, 'Xallas', 10 ),
                 ( 118, 'Os Ancares', 11 ),
@@ -182,7 +148,61 @@ INSERT INTO ProvinciasGalicia
                 ( 136, 'O Ribadeo', 12 ),
                 ( 137, 'Terra de Caldelas', 12 ),
                 ( 138, 'Terra de Celanova', 12 ),
-                ( 139, 'Terra de Trives', 12 ),
+                ( 139, 'Terra de Trives', 12 );
+rollback to sv1;
+-- Provocamos un error intencionado en uno de los insert
+-- Volvemos al savepoint sv1
+select * from comarcasgalicia;
+
+INSERT INTO comarcasgalicia
+	VALUES		( 115, 'Terra de Melide', 10 ),
+                ( 116, 'Terra de Soneira', 10 ),
+                ( 117, 'Xallas', 10 ),
+                ( 118, 'Os Ancares', 11 ),
+                ( 119, 'Chantada', 11 ),
+                ( 120, 'A Fonsagrada', 11 ),
+                ( 121, 'Lugo', 11 ),
+                ( 122, 'A Mariña Central', 11 ),
+                ( 123, 'A Mariña Occidental', 11 ),
+                ( 124, 'A Mariña Oriental', 11 ),
+                ( 125, 'Meira', 11 ),
+                ( 126, 'Quiroga', 11 ),
+                ( 127, 'Sarria', 11 ),
+                ( 128, 'Terra Chá', 11 ),
+                ( 129, 'Terra de Lemos', 11 ),
+                ( 130, 'A Ulloa', 11 ),
+                ( 131, 'Allariz-Maceda', 12 ),
+                ( 132, 'Baixa Limia', 12 ),
+                ( 133, 'O Carballiño', 12 ),
+                ( 134, 'A Limia', 12 ),
+                ( 135, 'Ourense', 12 ),
+                ( 136, 'O Ribadeo', 12 ),
+                ( 137, 'Terra de Caldelas', 12 ),
+                ( 138, 'Terra de Celanova', 12 ),
+                ( 139, 'Terra de Trives', 12 );
+savepoint sv2;                
+select * from comarcasgalicia;
+
+INSERT INTO Comarcasgalicia
+		VALUES
+                ( 140, null, 12 ),
+                ( 141, 'Verín', 12 ),
+                ( 142, 'Viana', 12 ),
+                ( 143, 'O Baixo Miño', 13 ),
+                ( 144, 'Caldas', 13 ),
+                ( 145, 'O Condado', 13 ),
+                ( 146, 'Deza', 13 ),
+                ( 147, 'O Morrazo', 13 ),
+                ( 148, 'A Paradanta', 13 ),
+                ( 149, 'Pontevedra', 13 ),
+                ( 150, 'O Salnés', 13 ),
+                ( 151, 'Tabeirós-Terra de Montes', 13 ),
+                ( 152, 'Vigo', 13 );
+rollback to sv2;
+Select * from ComarcasGalicia;
+
+INSERT INTO Comarcasgalicia
+		VALUES
                 ( 140, 'Valdeorras', 12 ),
                 ( 141, 'Verín', 12 ),
                 ( 142, 'Viana', 12 ),
@@ -197,6 +217,30 @@ INSERT INTO ProvinciasGalicia
                 ( 151, 'Tabeirós-Terra de Montes', 13 ),
                 ( 152, 'Vigo', 13 );
 
+commit;
+
+select * from comarcasgalicia;
+-- Hemos vuelto al punto de recuperacion 2 y tenemos que introducir los datos desde ahí
+
+INSERT INTO Comarcasgalicia
+		VALUES
+                ( 140, 'Valdeorras', 12 ),
+                ( 141, 'Verín', 12 ),
+                ( 142, 'Viana', 12 ),
+                ( 143, 'O Baixo Miño', 13 ),
+                ( 144, 'Caldas', 13 ),
+                ( 145, 'O Condado', 13 ),
+                ( 146, 'Deza', 13 ),
+                ( 147, 'O Morrazo', 13 ),
+                ( 148, 'A Paradanta', 13 ),
+                ( 149, 'Pontevedra', 13 ),
+                ( 150, 'O Salnés', 13 ),
+                ( 151, 'Tabeirós-Terra de Montes', 13 ),
+                ( 152, 'Vigo', 13 );
+savepoint tramo3Introducido;
+commit;
+
+Select * from comarcasgalicia;
 #*******************************************************************************************
 #	CREACIÓN DE LA TABLA ConcellosGalicia
 #		Concello		entero		autoincrementable
