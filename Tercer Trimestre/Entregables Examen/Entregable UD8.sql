@@ -16,12 +16,12 @@ USE 						DatosGalicia;
 #------------------------------------------------------------------------
 CREATE	TABLE Datos(
 idDatos			int PRIMARY KEY AUTO_INCREMENT,
-Provincia		varchar(20),
-Comarca			varchar(30),
-Concello		varchar(30),
-Superficie		float,
-Mujeres			int,
-Hombres			int
+Provincia		varchar(20) NOT NULL,
+Comarca			varchar(30) NOT NULL,
+Concello		varchar(30) NOT NULL,
+Superficie		float NOT NULL,
+Mujeres			int NOT NULL,
+Hombres			int NOT NULL
 );
 #------------------------------------------------------------------------
 #	CREAMOS DOS TABLAS (Datos_Modificados Y Datos_Borrados) CON LA MISMA ESTRUCTURA QUE LA TABLA Datos
@@ -347,12 +347,14 @@ INSERT INTO Datos ( Provincia, Comarca, Concello, Superficie, Mujeres, Hombres )
 		('Pontevedra','Vigo','Vigo',109.06,156528,140164);
 #------------------------------------------------------------------------
 #------------------------------------------------------------------------
+INSERT INTO DATOS (Provincia,Comarca,Concello,Superficie,Mujeres,Hombres) VALUES ('PruebaProvincia','PruebaComarca','PruebaConcello',400.55,400,1000);
+INSERT INTO DATOS (Provincia,Comarca,Concello,Superficie,Mujeres,Hombres) VALUES ('PruebaProvincia','PruebaComarca','PruebaConcello1',599.45,400,1000);
 #------------------------------------------------------------------------
 #	PROCEDIMIENTO PARA CORREGIR LA SUPERFICIE DE UN CONCELLO Y EL NUEVO VALOR LO PASAMOS COMO PARÁMETRO
 #------------------------------------------------------------------------
 DELIMITER //
 		DROP PROCEDURE IF EXISTS ActualizarSuperficieConcello //
-        CREATE PROCEDURE ActualizarSuperficieConcello(nombreConcello varchar(30), nuevaSuperficie float ) 
+        CREATE PROCEDURE ActualizarSuperficieConcello(IN nombreConcello varchar(30), IN nuevaSuperficie float ) 
             BEGIN
 			#Asignacion 
                 UPDATE Datos set Superficie = nuevaSuperficie where Concello = nombreConcello;
@@ -360,7 +362,16 @@ DELIMITER //
 //	DELIMITER ;
 
 #------------------------------------------------------------------------
-#	PROCEDIMIENTO PARA BORRAR LOS CONCELLOS CUYA SUPERFICIE OSCILE ENTRE UNOS VALORE MÍNIMO Y MÁXIMO PASADOS COMO PARÁMETROS
+#Linea de codigo para probar SCRIPT
+#------------------------------------------------------------------------
+#CALL ActualizarSuperficieConcello('PruebaConcello',655.00);
+#SI ACTUALIZO DOS VECES ME DICE QUE LA CLAVE PRIMARIA ESTA DUPLICADA;
+#------------------------------------------------------------------------
+
+#------------------------------------------------------------------------
+#PROCEDIMIENTO PARA BORRAR LOS CONCELLOS CUYA SUPERFICIE OSCILE ENTRE UNOS VALORE MÍNIMO Y MÁXIMO PASADOS COMO PARÁMETROS
+#------------------------------------------------------------------------
+#Primer intento
 #------------------------------------------------------------------------
 DELIMITER //
 		DROP PROCEDURE IF EXISTS BorrarConcelloConLimSuperiorInferior //
@@ -374,37 +385,88 @@ DELIMITER //
 			END
 //	DELIMITER ;
 #------------------------------------------------------------------------
-#	FUNCIÓN QUE DEVUELVA LA SUMA DE LAS DIFERENCIAS ENTRE MUJERES Y HOMBRES DE UNA DETERMINADA COMARCA PASADA COMO PARÁMETRO
+#Linea de codigo para probar SCRIPT
+#------------------------------------------------------------------------
+#CALL BorrarConcelloConLimSuperiorInferior(500,600);
+#------------------------------------------------------------------------
+#Segundo intento
 #------------------------------------------------------------------------
 DELIMITER //
-		DROP FUNCTION IF EXISTS diferenciaEntreMujeresHombresPorComarca //
-        CREATE FUNCTION diferenciaEntreMujeresHombresPorComarca( ComarcaParaUsar varchar( 30 ) ) 
-			RETURNS float
-            DETERMINISTIC
-            BEGIN
-		
-			RETURN SuperficieT;
-            END
-//	DELIMITER ;
+CREATE PROCEDURE BorrarConcelloConLimSuperiorInferiorMejorado(IN minSuperficie FLOAT, IN maxSuperficie FLOAT)
+BEGIN
+    DECLARE numBorrados INT DEFAULT 0;
+    DELETE FROM Datos WHERE Superficie BETWEEN minSuperficie AND maxSuperficie;
+    SET numBorrados = ROW_COUNT();
+    SELECT CONCAT(numBorrados, ' concellos eliminados') AS 'Resultado';
+END //
+DELIMITER ;
+
+
+#------------------------------------------------------------------------
+#linea de codigo para probar SCRIPT
+#------------------------------------------------------------------------
+#CALL BorrarConcelloConLimSuperiorInferiorMejorado(990,1000);
+#------------------------------------------------------------------------
+
+
+#------------------------------------------------------------------------
+#	FUNCIÓN QUE DEVUELVA LA SUMA DE LAS DIFERENCIAS ENTRE MUJERES Y HOMBRES DE UNA DETERMINADA COMARCA PASADA COMO PARÁMETRO
+#------------------------------------------------------------------------
+
+/*
+Como debemos definir la funcion. Es necesario usar cada uno de estos casos.
+
+DETERMINISTIC se refiere a que la función siempre devuelve el mismo resultado para un conjunto de entradas dados.
+
+NO SQL significa que la función no realiza operaciones en la base de datos y no tiene efectos secundarios en la misma.
+
+READS SQL DATA significa que la función solo realiza operaciones de lectura en la base de datos.
+*/
+
+DELIMITER //
+DROP FUNCTION IF EXISTS diferenciaEntreMujeresHombresPorComarca//
+CREATE FUNCTION diferenciaEntreMujeresHombresPorComarca(nomComarca VARCHAR(30))
+RETURNS INT
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+    DECLARE suma INT;
+    SELECT SUM(Mujeres - Hombres) INTO suma FROM Datos WHERE Comarca = nomComarca;
+    RETURN suma;
+END
+//
+DELIMITER ;
+
+#------------------------------------------------------------------------
+#linea de codigo para probar SCRIPT
+#------------------------------------------------------------------------
+#SELECT diferenciaEntreMujeresHombresPorComarca('PruebaComarca') as 'Diferencia M-H';
+#------------------------------------------------------------------------
+
+
 #------------------------------------------------------------------------
 #	FUNCIÓN QUE DEVUELVA LA SUPERFICE MEDIA DE LOS CONCELLOS DE UNA DETERMINADA COMARCA PASADA COMO PARÁMETRO
 #------------------------------------------------------------------------
 DELIMITER //
-		DROP FUNCTION IF EXISTS superficieMediaComarca //
-        CREATE FUNCTION superficieMediaComarca( ComarcaEntrada varchar( 30 ) ) 
-			RETURNS float
-            DETERMINISTIC
-            BEGIN
-			# Declaramos variable
-			DECLARE superficieMedia float;
-			# Asignamos  valor a variable LAS CONSULTAS VAN ENTRE PARENTESIS
-			SET superficieMedia = (SELECT avg(Superficie) FROM Datos where Comarca=ComarcaEntrada);
-			# Devolvemos variable calculada
-			RETURN superficieMedia;
-            END
-//	DELIMITER ;
+CREATE FUNCTION superficieMediaPorComarca(nombreComarca VARCHAR(30))
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE media DECIMAL(10,2);
+    SELECT AVG(Superficie) INTO media FROM Datos WHERE Comarca = nombreComarca;
+    RETURN media;
+END
+//
+DELIMITER ;
 
-select superficieMediaComarca('Vigo');
+
+#------------------------------------------------------------------------
+#linea de codigo para probar SCRIPT
+#------------------------------------------------------------------------
+#SELECT superficieMediaPorComarca('PruebaComarca') as 'Superficie MediaComara';
+#------------------------------------------------------------------------
+
+
 #------------------------------------------------------------------------
 #	TRIGGER PARA QUE CADA VEZ QUE MODIFIQUEMOS UN DATO GUARDE EL VALOR ANTERIOR EN LA TABLA Datos_Modificados
 #------------------------------------------------------------------------
@@ -458,8 +520,4 @@ DELIMITER //
 #------------------------------------------------------------------------
 # LLAMADAS A PROCEDURES Y FUNCIONES
 #------------------------------------------------------------------------
-CALL ActualizarSuperficieConcello('Soutomaior',123456789.123);
-CALL B
-SELECT * FROM Datos;
-SELECT * FROM Datos_Borrados;
-SELECT * FROM Datos_Modificados;
+;
