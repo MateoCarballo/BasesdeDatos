@@ -1,5 +1,5 @@
 # BasesdeDatos :floppy_disk:
-
+![Alt text](img/Encabezado.jpg)
 [Enlace al repositorio principal](https://github.com/MateoCarballo/Principal)
 
 Repositorio con ejercicios hechos en clase durante la segunda evaluación. En esta evaluación hemos empezado a trabajar con MySQL, creando nuestras primeras bases de datos, tablas y realizando consultas y subconsultas. El tercer trimestre comienza desde el uso de las vistas en MySQL.
