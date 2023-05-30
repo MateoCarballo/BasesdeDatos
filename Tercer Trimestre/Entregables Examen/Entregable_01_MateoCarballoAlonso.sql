@@ -54,18 +54,43 @@ ALTER TABLE Modulo
 #*******************************************************************************************
 #	AÑADIMOS LOS DATOS
 #*******************************************************************************************
-INSERT INTO Modulo 	VALUES 	(DEFAULT,'BD','MP0484','Bases de datos',187,1,'DAW'),
-							(DEFAULT,'CD','MP0487','Contornos de desenvolvemento',107,1,'DAW'),
-                            (DEFAULT,'FOE','MP0617','Formacion e orientacion laboral',107,1,'DAW'),
-                            (DEFAULT,'LM','MP0373','Linguaxe de marcas',133,1,'DAW'),
-                            (DEFAULT,'PR','MP0485','Programacion',240,1,'DAW'),
-                            (DEFAULT,'SSII','MP0483','Sistemas informaticos',186,1,'DAW'),
+							# MATERIAS DAW
+INSERT INTO Modulo 	VALUES 	(DEFAULT,'BD','MP0484','Bases de datos',187,1,'DAW,DAM'),
+							(DEFAULT,'CD','MP0487','Contornos de desenvolvemento',107,1,'DAW,DAM'),
+                            (DEFAULT,'FOE','MP0617','Formacion e orientacion laboral',107,1,'DAW,DAM'),
+                            (DEFAULT,'LM','MP0373','Linguaxe de marcas',133,1,'DAW,DAM'),
+                            (DEFAULT,'PR','MP0485','Programacion',240,1,'DAW,DAM'),
+                            (DEFAULT,'SSII','MP0483','Sistemas informaticos',186,1,'DAW,DAM'),
                             (DEFAULT,'DIW','MP0615','Disenho de interfaces web',157,2,'DAW'),
                             (DEFAULT,'DWCC','MP0612','Desenvolvemento web en contorno cliente',157,2,'DAW'),
                             (DEFAULT,'DWCS','MP0613','Desenvolvemento web en contorno servidor',175,2,'DAW'),
                             (DEFAULT,'DAW','MP0614','Despregamento de aplicacións web',88,2,'DAW'),
                             (DEFAULT,'EIE','MP0618','Empresa e iniciativa emprendedora',53,2,'DAW'),
                             (DEFAULT,'FCT','MP0619','Formación en centros de traballo',384,2,'DAW');
+                            
+                            /*
+                            PENDIENTE INTRODUCIR DATOS
+                            # MATERIAS DA
+                            (DEFAULT,'AD','MP0486','Acceso a datos',157,2,'DAM'),
+                            (DEFAULT,'DI','MP0488','Desenvolvemento de interfaces',140,2,'DAM'),
+                            (DEFAULT,'PSP','MP0490','Programacion de servizos e procesos',70,2,'DAM'),
+                            (DEFAULT,'DAW','MP0489','Programacion multimedia e dispositivos mobiles',88,2,'DAM'),
+                            (DEFAULT,'EIE','MP0618','Empresa e iniciativa emprendedora',53,2,'DAM'),
+                            (DEFAULT,'FCT','MP0619','Formación en centros de traballo',384,2,'DAM'),
+                            # MATERIAS INFORMATICA E COMUNICACIONS
+                            (DEFAULT,'CA','AM3009','Ciencias aplicadas I ',175,1,'IC'),
+							(DEFAULT,'CD','MP0487','Contornos de desenvolvemento',107,1,'IC'),
+                            (DEFAULT,'FOE','MP0617','Formacion e orientacion laboral',107,1,'IC'),
+                            (DEFAULT,'LM','MP0373','Linguaxe de marcas',133,1,'IC'),
+                            (DEFAULT,'PR','MP0485','Programacion',240,1,'IC'),
+                            (DEFAULT,'SSII','MP0483','Sistemas informaticos',186,1,'IC'),
+                            (DEFAULT,'AD','MP0486','Acceso a datos',157,2,'IC'),
+                            (DEFAULT,'DI','MP0488','Desenvolvemento de interfaces',140,2,'IC'),
+                            (DEFAULT,'PSP','MP0490','Programacion de servizos e procesos',70,2,'IC');
+                            
+                            */
+                            
+                           
 #*******************************************************************************************
 #	CREAMOS LOS GRUPOS DE USUARIOS:	Direccion, Alumnado, Profesorado
 #		En Alumnado -> AlumnadoDAM, AlumnadoDAW, AlumnadoASIR, AlumnadoSMR, AlumnadoIO, AlumnadoIC
@@ -116,8 +141,8 @@ GRANT Profesorado	TO ProfesoradoDAM, ProfesoradoDAW, ProfesoradoASIR, Profesorad
 #	CREATE VIEW ... AS SELECT ...;
 #*******************************************************************************************
 DROP VIEW IF EXISTS VistaDAM, VistaDAW, VistaASIR, VistaSMR, VistaIO, VistaIC;
-CREATE VIEW VistaDAM AS SELECT * FROM Modulo WHERE ciclo = 'DAM';
-CREATE VIEW VistaDAW AS SELECT * FROM Modulo WHERE ciclo = 'DAW';
+CREATE VIEW VistaDAM AS SELECT * FROM Modulo WHERE ciclo LIKE  '%DAM%';
+CREATE VIEW VistaDAW AS SELECT * FROM Modulo WHERE ciclo LIKE  '%DAW%';
 CREATE VIEW VistaASIR AS SELECT * FROM Modulo WHERE ciclo = 'ASIR';
 CREATE VIEW VistaSMR AS SELECT * FROM Modulo WHERE ciclo = 'SMR';
 CREATE VIEW VistaIO AS SELECT * FROM Modulo WHERE ciclo = 'IO';
@@ -128,8 +153,21 @@ CREATE VIEW VistaIC AS SELECT * FROM Modulo WHERE ciclo = 'IC';
 #-------------------------------------------------------------------------------------------
 #	GRANT <permiso> ON <tabla> TO <Rol1>, <Rol2>, ..., <Rol3>;
 #*******************************************************************************************
-GRANT ALL PRIVILEGES 	ON CiclosInformatica.Modulo to Direccion;
-GRANT SELECT 			ON CiclosInformatica.Modulo TO Profesorado,Alumnado;
+## DAMOS LOS PERMISOS A DIRECCION SOBRE LA TABLA, TIENE TODOS ##
+GRANT ALL PRIVILEGES 	ON CiclosInformatica.Modulo TO Direccion;
+## DAMOS PERMISOS A LOS ROLES PARA LOS PROFESORES DE CADA UNO DE LOS CICLOS, SOBRE LAS VISTAS ## 
+GRANT ALL PRIVILEGES 	ON VistaDAM 	TO ProfesoradoDAM;
+GRANT ALL PRIVILEGES 	ON VistaDAW 	TO ProfesoradoDAW;
+GRANT ALL PRIVILEGES 	ON VistaASIR 	TO ProfesoradoASIR;
+GRANT ALL PRIVILEGES 	ON VistaSMR 	TO ProfesoradoSMR;
+GRANT ALL PRIVILEGES 	ON VistaIO 		TO ProfesoradoIO;
+## DAMOS LOS PERMISOS A LOS ROLES PARA CADA UNO DE LOS ALUMNOS DE CADA UNO DE LOS CICLOS,SOBRE LAS MISMAS VISTAS QUE LOS PROFESORES ##
+GRANT SELECT 			ON VistaDAM 	TO AlumnadoDAM;
+GRANT SELECT 			ON VistaDAW 	TO AlumnadoDAW;
+GRANT SELECT 			ON VistaASIR	TO AlumnadoASIR;
+GRANT SELECT 			ON VistaSMR		TO AlumnadoSMR;
+GRANT SELECT 			ON VistaIO 		TO AlumnadoIO;
+GRANT SELECT 			ON VistaIC 		TO AlumnadoIC;
 
 #*******************************************************************************************
 #	CREAMOS LOS USUARIOS DE DIRECCIÓN CON DEFAULT ROLE
@@ -139,11 +177,12 @@ GRANT SELECT 			ON CiclosInformatica.Modulo TO Profesorado,Alumnado;
 #	...........................
 #	CREATE USER <direccionN> IDENTIFIED BY 'dir' DEFAULT ROLE 'Rol1';
 #*******************************************************************************************
-DROP USER IF EXISTS director, subdirector, secretario;
-CREATE USER director 	IDENTIFIED BY 'dir' DEFAULT ROLE Direccion;
-CREATE USER subdirector	IDENTIFIED BY 'dir' DEFAULT ROLE Direccion;
-CREATE USER secretario	IDENTIFIED BY 'dir'	DEFAULT ROLE Direccion;
-
+DROP USER IF EXISTS Director,Vicedirector,Secretario,JefeEstudiosDiurno,JefeEstudiosNocturno;
+CREATE USER Director 					IDENTIFIED BY 'Dir' DEFAULT ROLE Direccion;
+CREATE USER Vicedirector				IDENTIFIED BY 'Vic' DEFAULT ROLE Direccion;
+CREATE USER Secretario					IDENTIFIED BY 'Sec'	DEFAULT ROLE Direccion;
+CREATE USER JefeEstudiosDiurno			IDENTIFIED BY 'JED'	DEFAULT ROLE Direccion;
+CREATE USER JefeEstudiosNocturno		IDENTIFIED BY 'JEN'	DEFAULT ROLE Direccion;
 
 #*******************************************************************************************
 #	CREAMOS LOS USUARIOS DEL PROFESORADO CON DEFAULT ROLE
@@ -161,13 +200,43 @@ DROP USER IF EXISTS Prof_01DAM,Prof_02DAM,Prof_03DAM,Prof_04DAM,Prof_05DAM,
                     Prof_01SMR,Prof_02SMR,Prof_03SMR,Prof_04SMR,Prof_05SMR,
                     Prof_01IO,Prof_02IO,Prof_03IO,Prof_04IO,Prof_05IO,
                     Prof_01IC,Prof_02IC,Prof_03IC,Prof_04IC,Prof_05IC;
-                    
-CREATE USER Prof_01DAM,Prof_02DAM,Prof_03DAM,Prof_04DAM,Prof_05DAM			IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoDAM;
-CREATE USER Prof_01DAW,Prof_02DAW,Prof_03DAW,Prof_04DAW,Prof_05DAW			IDENTIFIED BY 'pro' DEFAULT ROLE ProfesoradoDAW;
-CREATE USER Prof_01ASIR,Prof_02ASIR,Prof_03ASIR,Prof_04ASIR,Prof_05ASIR		IDENTIFIED BY 'pro' DEFAULT ROLE ProfesoradoASIR;
-CREATE USER Prof_01SMR,Prof_02SMR,Prof_03SMR,Prof_04SMR,Prof_05SMR			IDENTIFIED BY 'pro' DEFAULT ROLE ProfesoradoSMR;
-CREATE USER Prof_01IO,Prof_02IO,Prof_03IO,Prof_04IO,Prof_05IO				IDENTIFIED BY 'pro' DEFAULT ROLE ProfesoradoIO;
-CREATE USER Prof_01IC,Prof_02IC,Prof_03IC,Prof_04IC,Prof_05IC				IDENTIFIED BY 'pro' DEFAULT ROLE ProfesoradoIC;
+### CREACION DE LOS USUARIOS PARA EL PROFESORADO DAM ###                    
+CREATE USER Prof_01DAM IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoDAM;
+CREATE USER Prof_02DAM IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoDAM;
+CREATE USER Prof_03DAM IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoDAM;
+CREATE USER Prof_04DAM IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoDAM;
+CREATE USER Prof_05DAM IDENTIFIED BY 'pro' 	DEFAULT ROLE ProfesoradoDAM;
+### CREACION DE LOS USUARIOS PARA EL PROFESORADO DAW ###                    
+CREATE USER Prof_01DAW IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoDAW;
+CREATE USER Prof_02DAW IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoDAW;
+CREATE USER Prof_03DAW IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoDAW;
+CREATE USER Prof_04DAW IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoDAW;
+CREATE USER Prof_05DAW IDENTIFIED BY 'pro' 	DEFAULT ROLE ProfesoradoDAW;
+### CREACION DE LOS USUARIOS PARA EL PROFESORADO ASIR ###                    
+CREATE USER Prof_01ASIR IDENTIFIED BY 'pro' DEFAULT ROLE ProfesoradoASIR;
+CREATE USER Prof_02ASIR IDENTIFIED BY 'pro' DEFAULT ROLE ProfesoradoASIR;
+CREATE USER Prof_03ASIR IDENTIFIED BY 'pro' DEFAULT ROLE ProfesoradoASIR;
+CREATE USER Prof_04ASIR IDENTIFIED BY 'pro' DEFAULT ROLE ProfesoradoASIR;
+CREATE USER Prof_05ASIR IDENTIFIED BY 'pro' DEFAULT ROLE ProfesoradoASIR;
+### CREACION DE LOS USUARIOS PARA EL PROFESORADO SMR ###                    
+CREATE USER Prof_01SMR IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoSMR;
+CREATE USER Prof_02SMR IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoSMR;
+CREATE USER Prof_03SMR IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoSMR;
+CREATE USER Prof_04SMR IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoSMR;
+CREATE USER Prof_05SMR IDENTIFIED BY 'pro' 	DEFAULT ROLE ProfesoradoSMR;
+### CREACION DE LOS USUARIOS PARA EL PROFESORADO IO ###                    
+CREATE USER Prof_01IO IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoIO;
+CREATE USER Prof_02IO IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoIO;
+CREATE USER Prof_03IO IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoIO;
+CREATE USER Prof_04IO IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoIO;
+CREATE USER Prof_05IO IDENTIFIED BY 'pro'  	DEFAULT ROLE ProfesoradoIO;
+### CREACION DE LOS USUARIOS PARA EL PROFESORADO IC ###                    
+CREATE USER Prof_01IC IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoIC;
+CREATE USER Prof_02IC IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoIC;
+CREATE USER Prof_03IC IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoIC;
+CREATE USER Prof_04IC IDENTIFIED BY 'pro'	DEFAULT ROLE ProfesoradoIC;
+CREATE USER Prof_05IC IDENTIFIED BY 'pro'  	DEFAULT ROLE ProfesoradoIC;
+
 
 #*******************************************************************************************
 #	DAMOS LOS RESPECTIVOS PRIVILEGIOS A LOS GRUPOS DEL ALUMNADO
@@ -206,11 +275,41 @@ DROP USER IF EXISTS Al_01DAM,Al_02DAM,Al_03DAM,Al_04DAM,Al_05DAM,
                     Al_01IO,Al_02IO,Al_03IO,Al_04IO,Al_05IO,
                     Al_01IC,Al_02IC,Al_03IC,Al_04IC,Al_05IC;
                     
-CREATE USER Al_01DAM,Al_02DAM,Al_03DAM,Al_04DAM,Al_05DAM		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoDAM;
-CREATE USER Al_01DAW,Al_02DAW,Al_03DAW,Al_04DAW,Al_05DAW		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoDAW;
-CREATE USER Al_01ASIR,Al_02ASIR,Al_03ASIR,Al_04ASIR,Al_05ASIR	IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoASIR;
-CREATE USER Al_01SMR,Al_02SMR,Al_03SMR,Al_04SMR,Al_05SMR		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoSMR;
-CREATE USER Al_01IO,Al_02IO,Al_03IO,Al_04IO,Al_05IO				IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoIO;
-CREATE USER Al_01IC,Al_02IC,Al_03IC,Al_04IC,Al_05IC				IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoIC;
+CREATE USER Al_01DAM		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoDAM;
+CREATE USER Al_02DAM		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoDAM;
+CREATE USER Al_03DAM		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoDAM;
+CREATE USER Al_04DAM		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoDAM;
+CREATE USER Al_05DAM		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoDAM;
+
+CREATE USER Al_01DAW		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoDAW;
+CREATE USER Al_02DAW		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoDAW;
+CREATE USER Al_03DAW		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoDAW;
+CREATE USER Al_04DAW		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoDAW;
+CREATE USER Al_05DAW		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoDAW;
+
+CREATE USER Al_01ASIR		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoASIR;
+CREATE USER Al_02ASIR		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoASIR;
+CREATE USER Al_03ASIR		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoASIR;
+CREATE USER Al_04ASIR		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoASIR;
+CREATE USER Al_05ASIR		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoASIR;
+
+CREATE USER Al_01SMR		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoSMR;
+CREATE USER Al_02SMR		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoSMR;
+CREATE USER Al_03SMR		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoSMR;
+CREATE USER Al_04SMR		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoSMR;
+CREATE USER Al_05SMR		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoSMR;
+
+CREATE USER Al_01IO		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoIO;
+CREATE USER Al_02IO		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoIO;
+CREATE USER Al_03IO		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoIO;
+CREATE USER Al_04IO		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoIO;
+CREATE USER Al_05IO		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoIO;
+
+CREATE USER Al_01IC		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoIC;
+CREATE USER Al_02IC		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoIC;
+CREATE USER Al_03IC		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoIC;
+CREATE USER Al_04IC		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoIC;
+CREATE USER Al_05IC		IDENTIFIED BY 'abc' DEFAULT ROLE AlumnadoIC;
+
 #*******************************************************************************************
 #*******************************************************************************************
